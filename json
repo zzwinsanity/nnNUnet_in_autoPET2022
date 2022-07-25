@@ -1,0 +1,41 @@
+from collections import OrderedDict
+from batchgenerators.utilities.file_and_folder_operations import save_json
+   
+   
+def main():
+    foldername = "Task118_autoPET"
+    numTraining = 1000
+    numTest = 0
+    numClass = 3
+    json_dict = OrderedDict()
+    json_dict['name'] = foldername
+    json_dict['description'] = foldername
+    json_dict['tensorImageSize'] = "3D"
+    json_dict['reference'] = "Gatidis S, Kuestner T. A whole-body FDG-PET/CT dataset with manually annotated tumor lesions (FDG-PET-CT-Lesions) [Dataset]. The Cancer Imaging Archive, 2022. DOI: 10.7937/gkr0-xv29"
+    json_dict['licence'] = "see challenge website"
+    json_dict['release'] = "0.0"
+    json_dict['modality'] = {
+        "0": "CT",
+    }
+    json_dict['labels'] = {i: str(i) for i in range(numClass)}
+    json_dict['labels'] = {'0':'backgroumd','1':'lesion'}
+   
+    json_dict['numTraining'] = numTraining
+    json_dict['numTest'] = numTest
+    json_dict['training'] = [{'image': "./imagesTr/autoPET_{:0>4d}.nii.gz".format(i),
+                              "label": "./labelsTr/autoPET_{:0>4d}.nii.gz".format(i)}
+                             for i in range(numTraining)]
+   
+    json_dict['test'] = ["./imagesTs/autoPET_{:0>4d}.nii.gz".format(i)
+                         for i in range(numTraining, numTraining+numTest)]
+    
+    print('save')
+   
+    save_json(json_dict, "./dataset.json")
+
+
+   
+   
+if __name__ == "__main__":
+    main()
+   
